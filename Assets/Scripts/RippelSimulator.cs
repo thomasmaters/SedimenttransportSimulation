@@ -11,9 +11,16 @@ public class RippelSimulator : MonoBehaviour
 
     private float wave_strength_ = 0.0f;
     private ushort wave_direction_ = 0;
+    private float d_constant = 0.0f;
+    private float beta_constant = 0.0f;
 
     UDPReceive udp_server_;
     UDPSend udp_client_;
+
+    public Slider slider_wave_direction;
+    public Slider slider_wave_strength;
+    public Slider slider_d_const;
+    public Slider slider_beta_const;
 
     private void Start()
     {
@@ -21,25 +28,22 @@ public class RippelSimulator : MonoBehaviour
         udp_server_ = gameObject.AddComponent(typeof(UDPReceive)) as UDPReceive;
     }
 
-    //Slider callback.
-    public void updateStrength(Slider slider)
+    public void updateValues()
     {
-        wave_strength_ = slider.value;
-        SendSettingUpdate();
-    }
-
-    //Slider callback
-    public void updateDirection(Slider slider)
-    {
-        wave_direction_ = (ushort)slider.value;
-        SendSettingUpdate();
+        d_constant = slider_d_const.value;
+        beta_constant = slider_beta_const.value;
+        wave_strength_ = slider_wave_strength.value;
+        wave_direction_ = (ushort)slider_wave_direction.value;
+        sendSettingUpdate();
     }
 
     //Sends slider settings to the wave simulator.
-    private void SendSettingUpdate()
+    private void sendSettingUpdate()
     {
-        byte[] data = new byte[8];
+        byte[] data = new byte[16];
         byte[] strength_data = BitConverter.GetBytes(wave_strength_);
+        byte[] d_data = BitConverter.GetBytes(d_constant);
+        byte[] beta_data = BitConverter.GetBytes(beta_constant);
         data[0] = 0xFE;
         data[1] = strength_data[0];
         data[2] = strength_data[1];
@@ -47,7 +51,15 @@ public class RippelSimulator : MonoBehaviour
         data[4] = strength_data[3];
         data[5] = (byte)(wave_direction_ & 0xFF);
         data[6] = (byte)((wave_direction_ >> 8) & 0xFF);
-        data[7] = 0xEF;
+        data[7] = d_data[0];
+        data[8] = d_data[1];
+        data[9] = d_data[2];
+        data[10] = d_data[3];
+        data[11] = beta_data[0];
+        data[12] = beta_data[1];
+        data[13] = beta_data[2];
+        data[14] = beta_data[3];
+        data[15] = 0xEF;
         udp_client_.sendData(data);
     }
 

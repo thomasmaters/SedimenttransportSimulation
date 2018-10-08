@@ -39,6 +39,7 @@ public class SensorSimulation : MonoBehaviour
         }
 
         udp_client_ = GetComponent<UDPSend>();
+        Debug.Log("SensorSimulation: ip; " + udp_client_.ip_ + " src_port;" + udp_client_.src_port_ + " remote_port;" + udp_client_.remote_port_);
         terrain_collider_ = terrain_.GetComponent<TerrainCollider>();
 
         gl_line_renderer_.const_points_.Add(Quaternion.Euler(start_angle_, transform.rotation.eulerAngles.y + 90, 0) * -transform.up * max_range_ - transform.up);

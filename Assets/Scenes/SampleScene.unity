@@ -1044,10 +1044,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terrain_: {fileID: 852660768}
-  slider_wave_direction: {fileID: 1465237793}
-  slider_wave_strength: {fileID: 1678597194}
-  slider_d_const: {fileID: 1856716541}
-  slider_beta_const: {fileID: 1473639474}
+  slider_wave_direction_: {fileID: 1465237793}
+  slider_wave_strength_: {fileID: 1678597194}
+  slider_d_const_: {fileID: 1856716541}
+  slider_beta_const_: {fileID: 1473639474}
 --- !u!4 &379355299
 Transform:
   m_ObjectHideFlags: 0
